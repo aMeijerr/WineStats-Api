@@ -19,6 +19,40 @@ export class DataController {
   //   return rows;
   // }
 
+  //Frågar efter en produktgrupp och returnerar en lista med de 10 mest sålda leverantörerna i denna produktgrupp.
+  //   SELECT producer_name, SUM(sales) AS
+  // total_sales
+  // FROM `sb-charts.SB_totals.sb_data_mars`
+  // WHERE product_group = 'Sprit'
+  // GROUP BY producer_name
+  // ORDER BY total_sales DESC
+  // LIMIT 10;
+
+  @Get('top-list')
+  async getTopList(
+    @Query('category') category: string[] | undefined,
+    @Query('minYear') minYear: number,
+    @Query('maxYear') maxYear: number,
+  ) {
+    let toplist_query = `SELECT producer_name, SUM(sales) AS total_sales FROM ${this.table.id}`;
+    let dateFilter = '';
+    if (minYear && maxYear) {
+      dateFilter += ` date BETWEEN ${minYear} AND ${maxYear} AND`;
+    }
+    if (category) {
+      dateFilter += ` product_group = '${category}' AND`;
+    }
+
+    if (dateFilter) {
+      dateFilter = ` WHERE ${dateFilter.slice(0, -4)}`;
+      toplist_query += `${dateFilter} GROUP BY producer_name ORDER BY total_sales DESC LIMIT 10`;
+    } else {
+      toplist_query += ` GROUP BY producer_name ORDER BY total_sales DESC LIMIT 10`;
+    }
+    const [rows] = await this.table.query(toplist_query.toString());
+    return rows;
+  }
+
   @Get('country')
   async getCountries(
     @Query('country') country: string | undefined,
