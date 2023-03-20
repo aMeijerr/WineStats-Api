@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { BigQueryService } from './app.service';
 import { DataController } from './app.controller';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [],
+  imports: [ConfigModule.forRoot()],
   controllers: [DataController],
   providers: [BigQueryService],
 })
