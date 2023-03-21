@@ -12,22 +12,6 @@ export class DataController {
   dataset = this.bigQuery.dataset('SB_totals');
   table = this.dataset.table('sb_data_mars');
 
-  // @Get('product_group')
-  // async getProductGroup(@Query('product_group') product_group: string) {
-  //   const query = `SELECT date, SUM(sales) AS total_sales FROM ${this.table.id} WHERE product_group = '${product_group}'`;
-  //   const [rows] = await this.table.query(query.toString());
-  //   return rows;
-  // }
-
-  //Frågar efter en produktgrupp och returnerar en lista med de 10 mest sålda leverantörerna i denna produktgrupp.
-  //   SELECT producer_name, SUM(sales) AS
-  // total_sales
-  // FROM `sb-charts.SB_totals.sb_data_mars`
-  // WHERE product_group = 'Sprit'
-  // GROUP BY producer_name
-  // ORDER BY total_sales DESC
-  // LIMIT 10;
-
   @Get('top-list')
   async getTopList(
     @Query('category') category: string[] | undefined,
