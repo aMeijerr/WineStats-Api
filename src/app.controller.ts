@@ -12,7 +12,7 @@ export class DataController {
   dataset = this.bigQuery.dataset('SB_totals');
   table = this.dataset.table('sb_data_mars');
 
-  @Get('top-list')
+  @Get('toplist')
   async getTopList(
     @Query('category') category: string[] | undefined,
     @Query('minYear') minYear: number,
