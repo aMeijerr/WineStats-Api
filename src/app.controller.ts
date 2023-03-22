@@ -5,7 +5,7 @@ import { BigQuery } from '@google-cloud/bigquery';
 export class DataController {
   options = {
     projectId: 'sb-charts',
-    // keyFilename: './sb-charts-3e4ae4a01d23.json',
+    keyFilename: './sb-charts-3e4ae4a01d23.json',
   };
 
   bigQuery = new BigQuery(this.options);
