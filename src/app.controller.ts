@@ -5,7 +5,7 @@ import { BigQuery } from '@google-cloud/bigquery';
 export class DataController {
   options = {
     projectId: 'sb-charts',
-    // keyFilename: './sb-charts-3e4ae4a01d23.json',
+    keyFilename: './sb-charts-3e4ae4a01d23.json',
   };
 
   bigQuery = new BigQuery(this.options);
@@ -14,12 +14,20 @@ export class DataController {
 
   @Get('producerToplist')
   async getProducerTopList(
+    @Query('country') country: string | undefined,
+    @Query('region') region: string | undefined,
     @Query('category') category: string[] | undefined,
     @Query('minYear') minYear: number,
     @Query('maxYear') maxYear: number,
   ) {
     let toplist_query = `SELECT producer_name, SUM(sales) AS total_sales FROM ${this.table.id}`;
     let dateFilter = '';
+    if (country) {
+      dateFilter += ` country = '${country}' AND`;
+    }
+    if (region) {
+      dateFilter += ` region = '${region}' AND`;
+    }
     if (minYear && maxYear) {
       dateFilter += ` date BETWEEN ${minYear} AND ${maxYear} AND`;
     }
