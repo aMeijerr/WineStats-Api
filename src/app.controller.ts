@@ -78,7 +78,7 @@ export class DataController {
     return rows;
   }
 
-  @Get('country')
+  @Get('sales')
   async getCountries(
     @Query('country') country: string | undefined,
     @Query('region') region: string | undefined,
