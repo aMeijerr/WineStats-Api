@@ -16,7 +16,7 @@ export class DataController {
   async getProducerTopList(
     @Query('country') country: string | undefined,
     @Query('region') region: string | undefined,
-    @Query('category') category: string[] | undefined,
+    @Query('category') category: string | undefined,
     @Query('minYear') minYear: number,
     @Query('maxYear') maxYear: number,
   ) {
@@ -49,7 +49,7 @@ export class DataController {
   async getProductTopList(
     @Query('country') country: string | undefined,
     @Query('region') region: string | undefined,
-    @Query('category') category: string[] | undefined,
+    @Query('category') category: string | undefined,
     @Query('minYear') minYear: number,
     @Query('maxYear') maxYear: number,
   ) {
@@ -82,7 +82,7 @@ export class DataController {
   async getCountries(
     @Query('country') country: string | undefined,
     @Query('region') region: string | undefined,
-    @Query('category') category: string[] | undefined,
+    @Query('category') category: string | undefined,
     @Query('minYear') minYear: number,
     @Query('maxYear') maxYear: number,
   ) {
