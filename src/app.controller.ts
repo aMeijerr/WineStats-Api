@@ -20,7 +20,7 @@ export class DataController {
     @Query('minYear') minYear: number,
     @Query('maxYear') maxYear: number,
   ) {
-    let toplist_query = `SELECT producer_name, SUM(sales) AS total_sales FROM ${this.table.id}`;
+    let producer_query = `SELECT producer_name, SUM(sales) AS total_sales FROM ${this.table.id}`;
     let dateFilter = '';
     if (country) {
       dateFilter += ` country = '${country}' AND`;
@@ -37,11 +37,11 @@ export class DataController {
 
     if (dateFilter) {
       dateFilter = ` WHERE ${dateFilter.slice(0, -4)}`;
-      toplist_query += `${dateFilter} GROUP BY producer_name ORDER BY total_sales DESC LIMIT 10`;
+      producer_query += `${dateFilter} GROUP BY producer_name ORDER BY total_sales DESC LIMIT 10`;
     } else {
-      toplist_query += ` GROUP BY producer_name ORDER BY total_sales DESC LIMIT 10`;
+      producer_query += ` GROUP BY producer_name ORDER BY total_sales DESC LIMIT 10`;
     }
-    const [rows] = await this.table.query(toplist_query.toString());
+    const [rows] = await this.table.query(producer_query.toString());
     return rows;
   }
 
@@ -53,7 +53,7 @@ export class DataController {
     @Query('minYear') minYear: number,
     @Query('maxYear') maxYear: number,
   ) {
-    let toplist_query = `SELECT name, SUM(sales) AS total_sales FROM ${this.table.id}`;
+    let product_query = `SELECT name, SUM(sales) AS total_sales FROM ${this.table.id}`;
     let dateFilter = '';
     if (country) {
       dateFilter += ` country = '${country}' AND`;
@@ -70,23 +70,23 @@ export class DataController {
 
     if (dateFilter) {
       dateFilter = ` WHERE ${dateFilter.slice(0, -4)}`;
-      toplist_query += `${dateFilter} GROUP BY name ORDER BY total_sales DESC LIMIT 10`;
+      product_query += `${dateFilter} GROUP BY name ORDER BY total_sales DESC LIMIT 10`;
     } else {
-      toplist_query += ` GROUP BY name ORDER BY total_sales DESC LIMIT 10`;
+      product_query += ` GROUP BY name ORDER BY total_sales DESC LIMIT 10`;
     }
-    const [rows] = await this.table.query(toplist_query.toString());
+    const [rows] = await this.table.query(product_query.toString());
     return rows;
   }
 
-  @Get('productGroupList')
-  async getProductGroupList(
+  @Get('categoryToplist')
+  async getCategoryTopList(
     @Query('country') country: string | undefined,
     @Query('region') region: string | undefined,
     @Query('category') category: string | undefined,
     @Query('minYear') minYear: number,
     @Query('maxYear') maxYear: number,
   ) {
-    let productgroup_query = `SELECT product_group_detail, SUM(sales) AS total_sales FROM ${this.table.id}`;
+    let categories_query = `SELECT product_group_detail, SUM(sales) AS total_sales FROM ${this.table.id}`;
     let dateFilter = '';
     if (country) {
       dateFilter += ` country = '${country}' AND`;
@@ -103,11 +103,11 @@ export class DataController {
 
     if (dateFilter) {
       dateFilter = ` WHERE ${dateFilter.slice(0, -4)}`;
-      productgroup_query += `${dateFilter} GROUP BY product_group_detail ORDER BY total_sales DESC LIMIT 10`;
+      categories_query += `${dateFilter} GROUP BY product_group_detail ORDER BY total_sales DESC LIMIT 10`;
     } else {
-      productgroup_query += ` GROUP BY product_group_detail ORDER BY total_sales DESC LIMIT 10`;
+      categories_query += ` GROUP BY product_group_detail ORDER BY total_sales DESC LIMIT 10`;
     }
-    const [rows] = await this.table.query(productgroup_query.toString());
+    const [rows] = await this.table.query(categories_query.toString());
     return rows;
   }
 
