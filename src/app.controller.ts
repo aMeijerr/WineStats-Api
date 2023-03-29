@@ -111,8 +111,41 @@ export class DataController {
     return rows;
   }
 
+  @Get('countryTopList')
+  async getCountryTopList(
+    @Query('country') country: string | undefined,
+    @Query('region') region: string | undefined,
+    @Query('category') category: string | undefined,
+    @Query('minYear') minYear: number,
+    @Query('maxYear') maxYear: number,
+  ) {
+    let country_query = `SELECT country, SUM(sales) AS total_sales FROM ${this.table.id}`;
+    let dateFilter = '';
+    if (country) {
+      dateFilter += ` country = '${country}' AND`;
+    }
+    if (region) {
+      dateFilter += ` region = '${region}' AND`;
+    }
+    if (minYear && maxYear) {
+      dateFilter += ` date BETWEEN ${minYear} AND ${maxYear} AND`;
+    }
+    if (category) {
+      dateFilter += ` product_group = '${category}' AND`;
+    }
+
+    if (dateFilter) {
+      dateFilter = ` WHERE ${dateFilter.slice(0, -4)}`;
+      country_query += `${dateFilter} GROUP BY country ORDER BY total_sales DESC LIMIT 10`;
+    } else {
+      country_query += ` GROUP BY country ORDER BY total_sales DESC LIMIT 10`;
+    }
+    const [rows] = await this.table.query(country_query.toString());
+    return rows;
+  }
+
   @Get('sales')
-  async getCountries(
+  async getSales(
     @Query('country') country: string | undefined,
     @Query('region') region: string | undefined,
     @Query('category') category: string | undefined,
