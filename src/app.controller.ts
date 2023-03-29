@@ -78,6 +78,39 @@ export class DataController {
     return rows;
   }
 
+  @Get('productGroupList')
+  async getProductGroupList(
+    @Query('country') country: string | undefined,
+    @Query('region') region: string | undefined,
+    @Query('category') category: string | undefined,
+    @Query('minYear') minYear: number,
+    @Query('maxYear') maxYear: number,
+  ) {
+    let productgroup_query = `SELECT product_group_detail, SUM(sales) AS total_sales FROM ${this.table.id}`;
+    let dateFilter = '';
+    if (country) {
+      dateFilter += ` country = '${country}' AND`;
+    }
+    if (region) {
+      dateFilter += ` region = '${region}' AND`;
+    }
+    if (minYear && maxYear) {
+      dateFilter += ` date BETWEEN ${minYear} AND ${maxYear} AND`;
+    }
+    if (category) {
+      dateFilter += ` product_group = '${category}' AND`;
+    }
+
+    if (dateFilter) {
+      dateFilter = ` WHERE ${dateFilter.slice(0, -4)}`;
+      productgroup_query += `${dateFilter} GROUP BY product_group_detail ORDER BY total_sales DESC LIMIT 10`;
+    } else {
+      productgroup_query += ` GROUP BY product_group_detail ORDER BY total_sales DESC LIMIT 10`;
+    }
+    const [rows] = await this.table.query(productgroup_query.toString());
+    return rows;
+  }
+
   @Get('sales')
   async getCountries(
     @Query('country') country: string | undefined,
