@@ -34,7 +34,6 @@ export class DataController {
     if (category) {
       dateFilter += ` product_group = '${category}' AND`;
     }
-
     if (dateFilter) {
       dateFilter = ` WHERE ${dateFilter.slice(0, -4)}`;
       producer_query += `${dateFilter} GROUP BY producer_name ORDER BY total_sales DESC LIMIT 10`;
